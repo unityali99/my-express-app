@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
-const { validateCustomer, checkIdRoute, checkMainRoute } = require("../utils");
+const { validateCustomer } = require("../utils");
+const { checkIdRoute, checkMainRoute } = require("../middlewares");
 
 router.param("id", checkIdRoute);
 

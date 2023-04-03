@@ -1,6 +1,7 @@
 const express = require("express");
 const Rental = require("../models/Rental");
-const { validateRental, checkIdRoute, checkMainRoute } = require("../utils");
+const { validateRental } = require("../utils");
+const { checkIdRoute, checkMainRoute } = require("../middlewares");
 
 const router = express.Router();
 

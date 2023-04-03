@@ -1,12 +1,13 @@
 const express = require("express");
 const User = require("../models/User");
-const { validateLogin, checkPost } = require("../utils");
+const { validateLogin } = require("../utils");
+const { checkPost } = require("../middlewares");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 
 router.use(checkPost);
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const { error } = validateLogin(req.body);
     if (error) return res.status(422).send(error.details[0].message);

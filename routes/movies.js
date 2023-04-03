@@ -1,6 +1,7 @@
 const express = require("express");
 const Movie = require("../models/Movie");
-const { validateMovie, checkIdRoute, checkMainRoute } = require("../utils");
+const { validateMovie } = require("../utils");
+const { checkIdRoute, checkMainRoute } = require("../middlewares");
 
 const router = express.Router();
 

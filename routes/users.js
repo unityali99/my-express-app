@@ -1,7 +1,8 @@
 const express = require("express");
 const User = require("../models/User");
 const _ = require("lodash");
-const { validateUser, hashPassword, checkPost } = require("../utils");
+const { validateUser, hashPassword } = require("../utils");
+const { checkPost } = require("../middlewares");
 
 const router = express.Router();
 
@@ -19,7 +20,11 @@ router.post("/", async (req, res) => {
       email: req.body.email,
       password: hashedPass,
     });
-    res.status(201).send(_.pick(createdUser, ["_id", "fullName", "email"]));
+    const token = createdUser.generateAuthToken();
+    res
+      .header("X-Auth-Token", token)
+      .status(201)
+      .send(_.pick(createdUser, ["_id", "fullName", "email"]));
   } catch (err) {
     res.status(400).send(err.message);
   }
