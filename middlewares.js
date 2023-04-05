@@ -21,15 +21,19 @@ function checkMainRoute(req, res, next) {
   next();
 }
 
-function auth(req, res, next) {
-  const token = req.header("X-Auth-Token");
-  if (!token) return res.status(401).send("Access Denied. No token provided");
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-  } catch (err) {
-    res.status(422).send("Invalid token provided");
-  }
+function auth(getAllowed) {
+  return (req, res, next) => {
+    if (req.method === "GET" && getAllowed) return next();
+    const token = req.header("X-Auth-Token");
+    if (!token) return res.status(401).send("Access Denied. No token provided");
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      next();
+    } catch (err) {
+      res.status(422).send("Invalid token provided");
+    }
+  };
 }
 
 module.exports.checkPost = checkPost;

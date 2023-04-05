@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
 const { validateCustomer } = require("../utils");
-const { checkIdRoute, checkMainRoute } = require("../middlewares");
+const { checkIdRoute, checkMainRoute, auth } = require("../middlewares");
 
 router.param("id", checkIdRoute);
 
-router.use("/", checkMainRoute);
+router.use(auth(false));
+router.use(checkMainRoute);
 
 router
   .route("/")

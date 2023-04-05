@@ -1,13 +1,14 @@
 const express = require("express");
 const Movie = require("../models/Movie");
 const { validateMovie } = require("../utils");
-const { checkIdRoute, checkMainRoute } = require("../middlewares");
+const { checkIdRoute, checkMainRoute, auth } = require("../middlewares");
 
 const router = express.Router();
 
 router.param("id", checkIdRoute);
 
-router.use("/", checkMainRoute);
+router.use(auth(true));
+router.use(checkMainRoute);
 
 router
   .route("/")
