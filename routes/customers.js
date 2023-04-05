@@ -5,13 +5,13 @@ const { validateCustomer } = require("../utils");
 const { checkIdRoute, checkMainRoute, auth } = require("../middlewares");
 
 router.param("id", checkIdRoute);
+router.param("id", auth);
 
-router.use(auth(false));
 router.use(checkMainRoute);
 
 router
   .route("/")
-  .get(async (req, res) => {
+  .get(auth, async (req, res) => {
     try {
       const customers = await Customer.find();
       res.status(200).send(customers);
@@ -19,7 +19,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .post(async (req, res) => {
+  .post(auth, async (req, res) => {
     try {
       if (!validateCustomer(req.body))
         return res.status(422).send(error.details[0].message);

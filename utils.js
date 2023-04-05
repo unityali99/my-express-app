@@ -46,6 +46,7 @@ function validateUser(obj) {
     password: Joi.string()
       .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
       .required(),
+    isAdmin: Joi.boolean().required(),
   });
   return schema.validate(obj);
 }

@@ -1,13 +1,18 @@
 const express = require("express");
 const Rental = require("../models/Rental");
 const { validateRental } = require("../utils");
-const { checkIdRoute, checkMainRoute, auth } = require("../middlewares");
+const {
+  checkIdRoute,
+  checkMainRoute,
+  auth,
+  isAdmin,
+} = require("../middlewares");
 
 const router = express.Router();
 
 router.param("id", checkIdRoute);
 
-router.use(auth(true));
+router.use(auth);
 router.use(checkMainRoute);
 
 router
@@ -22,7 +27,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .post(async (req, res) => {
+  .post(auth, async (req, res) => {
     try {
       const { error } = validateRental(req.body);
       if (error) return res.status(422).send(error.details[0].message);
@@ -35,7 +40,7 @@ router
 
 router
   .route("/:id")
-  .get(async (req, res) => {
+  .get(auth, async (req, res) => {
     try {
       const rental = await Rental.findById(req.params.id);
       if (!rental) return res.status(404).send("Rental not found");
@@ -44,7 +49,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .put(async (req, res) => {
+  .put(auth, isAdmin, async (req, res) => {
     try {
       const { error } = validateRental(req.body);
       if (error) return res.status(422).send(error.details[0].message);
@@ -58,7 +63,7 @@ router
       res.status(400).send(err);
     }
   })
-  .delete(async (req, res) => {
+  .delete(auth, isAdmin, async (req, res) => {
     try {
       const deletedRental = await Rental.findByIdAndDelete(req.params.id);
       if (!deletedRental) return res.status(404).send("Rental not found");
