@@ -1,13 +1,17 @@
 const express = require("express");
 const Movie = require("../models/Movie");
 const { validateMovie } = require("../utils");
-const { checkIdRoute, checkMainRoute, auth } = require("../middlewares");
+const {
+  checkIdRoute,
+  checkMainRoute,
+  auth,
+  isAdmin,
+} = require("../middlewares");
 
 const router = express.Router();
 
 router.param("id", checkIdRoute);
 
-router.use(auth);
 router.use(checkMainRoute);
 
 router
@@ -20,7 +24,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .post(async (req, res) => {
+  .post(auth, async (req, res) => {
     try {
       const { error } = validateMovie(req.body);
       if (error) return res.status(422).send(error.details[0].message);
@@ -45,7 +49,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .put(async (req, res) => {
+  .put(auth, isAdmin, async (req, res) => {
     try {
       const { error } = validateMovie(req.body);
       if (error) return res.status(422).send(error.details[0].message);
@@ -60,7 +64,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .delete(async (req, res) => {
+  .delete(auth, isAdmin, async (req, res) => {
     try {
       const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
       if (!deletedMovie) return res.status(404).send("Movie not found");

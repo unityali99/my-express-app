@@ -12,7 +12,6 @@ const router = express.Router();
 
 router.param("id", checkIdRoute);
 
-router.use(auth);
 router.use(checkMainRoute);
 
 router

@@ -1,13 +1,17 @@
 const express = require("express");
 const { validateGenre } = require("../utils");
-const { checkIdRoute, checkMainRoute, auth } = require("../middlewares");
+const {
+  checkIdRoute,
+  checkMainRoute,
+  auth,
+  isAdmin,
+} = require("../middlewares");
 
 const Genre = require("../models/Genre");
 const router = express.Router();
 
 router.param("id", checkIdRoute);
 
-router.use(auth);
 router.use(checkMainRoute);
 
 router
@@ -20,7 +24,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .post(async (req, res) => {
+  .post(auth, async (req, res) => {
     try {
       const { error } = validateGenre(req.body);
       if (error) return res.status(400).send(error.details[0].message);
@@ -45,7 +49,7 @@ router
       console.log(err.message);
     }
   })
-  .put(async (req, res) => {
+  .put(auth, isAdmin, async (req, res) => {
     try {
       const { error } = validateGenre(req.body);
       if (error) return res.status(400).send(error.details[0].message);
@@ -65,7 +69,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .delete(async (req, res) => {
+  .delete(auth, isAdmin, async (req, res) => {
     try {
       const deletedGenre = await Genre.findByIdAndDelete(req.params.id);
       if (!deletedGenre)

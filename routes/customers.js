@@ -2,10 +2,16 @@ const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
 const { validateCustomer } = require("../utils");
-const { checkIdRoute, checkMainRoute, auth } = require("../middlewares");
+const {
+  checkIdRoute,
+  checkMainRoute,
+  auth,
+  isAdmin,
+} = require("../middlewares");
 
-router.param("id", checkIdRoute);
 router.param("id", auth);
+router.param("id", isAdmin);
+router.param("id", checkIdRoute);
 
 router.use(checkMainRoute);
 
