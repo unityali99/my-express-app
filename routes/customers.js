@@ -17,7 +17,7 @@ router.use(checkMainRoute);
 
 router
   .route("/")
-  .get(auth, async (req, res) => {
+  .get(auth, isAdmin, async (req, res) => {
     try {
       const customers = await Customer.find();
       res.status(200).send(customers);
@@ -25,7 +25,7 @@ router
       res.status(400).send(err.message);
     }
   })
-  .post(auth, async (req, res) => {
+  .post(auth, isAdmin, async (req, res) => {
     try {
       if (!validateCustomer(req.body))
         return res.status(422).send(error.details[0].message);

@@ -19,6 +19,7 @@ router.post("/", async (req, res) => {
       fullName: req.body.fullName,
       email: req.body.email,
       password: hashedPass,
+      isAdmin: req.body.isAdmin,
     });
     const token = createdUser.generateAuthToken();
     res
