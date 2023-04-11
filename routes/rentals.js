@@ -23,7 +23,7 @@ router
         .populate("movie", { _id: 0 });
       res.status(200).send(rentals);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .post(auth, async (req, res) => {
@@ -33,7 +33,7 @@ router
       const newRental = await Rental.create(req.body);
       res.status(201).send(`Rental created successfully => ${newRental}`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 
@@ -45,7 +45,7 @@ router
       if (!rental) return res.status(404).send("Rental not found");
       res.status(200).send(rental);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .put(auth, isAdmin, async (req, res) => {
@@ -68,7 +68,7 @@ router
       if (!deletedRental) return res.status(404).send("Rental not found");
       res.status(200).send(`${deletedRental} has been removed`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 

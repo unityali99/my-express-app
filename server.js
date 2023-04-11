@@ -10,9 +10,11 @@ const authRoute = require("./routes/auth");
 const mongoose = require("mongoose");
 const app = express();
 
-mongoose.connect(
-  "mongodb+srv://UNITY_Ali:Alikiller1383@cluster0.jemggly.mongodb.net/movies"
-);
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.jemggly.mongodb.net/movies`
+  )
+  .catch((reason) => console.log(reason.message));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

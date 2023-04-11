@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
       .status(201)
       .send(_.pick(createdUser, ["_id", "fullName", "email"]));
   } catch (err) {
-    res.status(400).send(err.message);
+    res.status(500).send(err.message);
   }
 });
 

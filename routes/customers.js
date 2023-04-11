@@ -22,7 +22,7 @@ router
       const customers = await Customer.find();
       res.status(200).send(customers);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .post(auth, isAdmin, async (req, res) => {
@@ -32,7 +32,7 @@ router
       const customers = await Customer.create(req.body);
       res.status(201).send(`${customers} added to the database`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 
@@ -44,7 +44,7 @@ router
       if (!customer) return res.status(404).send("Customer not found");
       res.status(200).send(customer);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .put(async (req, res) => {
@@ -61,7 +61,7 @@ router
           .send(`There is no customer with the given ID ${req.params.id}`);
       res.status(200).send(`Updated customer ${updatedCustomer}`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .delete(async (req, res) => {
@@ -70,7 +70,7 @@ router
       if (!deletedCustomer) return res.status(404).send(`Customer not found`);
       res.status(200).send(`Deleted customer ${deletedCustomer}`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 

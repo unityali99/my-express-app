@@ -21,7 +21,7 @@ router
       const movies = await Movie.find().populate("genre", { name: 1, _id: 0 });
       res.status(200).send(movies);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .post(auth, async (req, res) => {
@@ -31,7 +31,7 @@ router
       const newMovie = await Movie.create(req.body);
       res.status(201).send(`Movie created successfully => ${newMovie}`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 
@@ -46,7 +46,7 @@ router
       if (!movie) return res.status(404).send("Movie not found");
       res.status(200).send(movie);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .put(auth, isAdmin, async (req, res) => {
@@ -61,7 +61,7 @@ router
       if (!updatedMovie) return res.status(404).send("Movie not found");
       res.status(200).send(updatedMovie);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .delete(auth, isAdmin, async (req, res) => {
@@ -70,7 +70,7 @@ router
       if (!deletedMovie) return res.status(404).send("Movie not found");
       res.status(200).send(`Movie was deleted => ${deletedMovie}`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 

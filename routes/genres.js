@@ -21,7 +21,7 @@ router
       const genres = await Genre.find();
       res.send(genres);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .post(auth, async (req, res) => {
@@ -31,7 +31,7 @@ router
       const genre = await Genre.create(req.body);
       res.status(200).send(`Genre ${genre} added successfully.`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 
@@ -46,7 +46,7 @@ router
           .send(`There is no genre with ID ${req.params.id}`);
       res.status(200).send(genre);
     } catch (err) {
-      console.log(err.message);
+      res.status(500).send(err.message);
     }
   })
   .put(auth, isAdmin, async (req, res) => {
@@ -66,7 +66,7 @@ router
           .send(`There is no genre with the given ID ${req.params.id}`);
       res.send(`Updated genre: ${updatedGenre}`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   })
   .delete(auth, isAdmin, async (req, res) => {
@@ -79,7 +79,7 @@ router
 
       res.send(`Deleted genre: ${deletedGenre}`);
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(500).send(err.message);
     }
   });
 
