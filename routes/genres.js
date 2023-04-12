@@ -5,6 +5,7 @@ const {
   checkMainRoute,
   auth,
   isAdmin,
+  asyncMiddleWare,
 } = require("../middlewares");
 
 const Genre = require("../models/Genre");
@@ -16,14 +17,12 @@ router.use(checkMainRoute);
 
 router
   .route("/")
-  .get(async (req, res) => {
-    try {
+  .get(
+    asyncMiddleWare(async (req, res, next) => {
       const genres = await Genre.find();
       res.send(genres);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  })
+    })
+  )
   .post(auth, async (req, res) => {
     try {
       const { error } = validateGenre(req.body);

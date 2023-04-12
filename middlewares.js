@@ -38,8 +38,24 @@ function isAdmin(req, res, next) {
   next();
 }
 
+function error(error, req, res, next) {
+  res.status(500).send(error.message);
+}
+
+function asyncMiddleWare(handler) {
+  return async (req, res, next) => {
+    try {
+      await handler(req, res);
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
 module.exports.checkPost = checkPost;
 module.exports.checkIdRoute = checkIdRoute;
 module.exports.checkMainRoute = checkMainRoute;
 module.exports.auth = auth;
 module.exports.isAdmin = isAdmin;
+module.exports.error = error;
+module.exports.asyncMiddleWare = asyncMiddleWare;
