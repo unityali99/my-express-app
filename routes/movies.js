@@ -17,29 +17,25 @@ router.use(checkMainRoute);
 
 router
   .route("/")
-  .get(async (req, res) => {
-    try {
+  .get(
+    asyncMiddleWare(async (req, res) => {
       const movies = await Movie.find().populate("genre", { name: 1, _id: 0 });
       res.status(200).send(movies);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  })
-  .post(auth, async (req, res) => {
-    try {
+    })
+  )
+  .post(
+    auth,
+    asyncMiddleWare(async (req, res) => {
       const { error } = validateMovie(req.body);
       if (error) return res.status(422).send(error.details[0].message);
       const newMovie = await Movie.create(req.body);
       res.status(201).send(`Movie created successfully => ${newMovie}`);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  });
+    })
+  );
 
 router
   .route("/:id")
   .get(
-    "/",
     asyncMiddleWare(async (req, res) => {
       const movie = await Movie.findById(req.params.id).populate("genre", {
         name: 1,
@@ -50,7 +46,6 @@ router
     })
   )
   .put(
-    "/",
     auth,
     isAdmin,
     asyncMiddleWare(async (req, res) => {
@@ -66,7 +61,6 @@ router
     })
   )
   .delete(
-    "/",
     auth,
     isAdmin,
     asyncMiddleWare(async (req, res) => {
