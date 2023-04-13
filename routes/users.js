@@ -8,8 +8,9 @@ const router = express.Router();
 
 router.use(checkPost);
 
-router.post("/", async (req, res) => {
-  try {
+router.post(
+  "/",
+  asyncMiddleware(async (req, res) => {
     const { error } = validateUser(req.body);
     const userExists = await User.findOne({ email: req.body.email });
     if (userExists) return res.status(403).send("User already exists");
@@ -26,9 +27,7 @@ router.post("/", async (req, res) => {
       .header("X-Auth-Token", token)
       .status(201)
       .send(_.pick(createdUser, ["_id", "fullName", "email"]));
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+  })
+);
 
 module.exports = router;

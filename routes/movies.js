@@ -6,6 +6,7 @@ const {
   checkMainRoute,
   auth,
   isAdmin,
+  asyncMiddleWare,
 } = require("../middlewares");
 
 const router = express.Router();
@@ -37,20 +38,22 @@ router
 
 router
   .route("/:id")
-  .get(async (req, res) => {
-    try {
+  .get(
+    "/",
+    asyncMiddleWare(async (req, res) => {
       const movie = await Movie.findById(req.params.id).populate("genre", {
         name: 1,
         _id: 0,
       });
       if (!movie) return res.status(404).send("Movie not found");
       res.status(200).send(movie);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  })
-  .put(auth, isAdmin, async (req, res) => {
-    try {
+    })
+  )
+  .put(
+    "/",
+    auth,
+    isAdmin,
+    asyncMiddleWare(async (req, res) => {
       const { error } = validateMovie(req.body);
       if (error) return res.status(422).send(error.details[0].message);
       const updatedMovie = await Movie.findByIdAndUpdate(
@@ -60,18 +63,17 @@ router
       );
       if (!updatedMovie) return res.status(404).send("Movie not found");
       res.status(200).send(updatedMovie);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  })
-  .delete(auth, isAdmin, async (req, res) => {
-    try {
+    })
+  )
+  .delete(
+    "/",
+    auth,
+    isAdmin,
+    asyncMiddleWare(async (req, res) => {
       const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
       if (!deletedMovie) return res.status(404).send("Movie not found");
       res.status(200).send(`Movie was deleted => ${deletedMovie}`);
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  });
+    })
+  );
 
 module.exports = router;
