@@ -1,8 +1,8 @@
 const express = require("express");
 const User = require("../models/User");
 const _ = require("lodash");
-const { validateUser, hashPassword } = require("../utils");
-const { checkPost, asyncMiddleWare } = require("../middlewares");
+const { validateUser, hashPassword } = require("../utilities/utils");
+const { checkPost, asyncMiddleWare } = require("../utilities/middlewares");
 
 const router = express.Router();
 

@@ -1,12 +1,12 @@
 const express = require("express");
-const { validateGenre } = require("../utils");
+const { validateGenre } = require("../utilities/utils");
 const {
   checkIdRoute,
   checkMainRoute,
   auth,
   isAdmin,
   asyncMiddleWare,
-} = require("../middlewares");
+} = require("../utilities/middlewares");
 
 const Genre = require("../models/Genre");
 const router = express.Router();

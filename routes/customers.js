@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Customer = require("../models/Customer");
-const { validateCustomer } = require("../utils");
+const { validateCustomer } = require("../utilities/utils");
 const {
   checkIdRoute,
   checkMainRoute,
   auth,
   isAdmin,
   asyncMiddleWare,
-} = require("../middlewares");
+} = require("../utilities/middlewares");
 
 router.param("id", auth);
 router.param("id", isAdmin);

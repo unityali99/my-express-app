@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/User");
-const { validateLogin } = require("../utils");
-const { checkPost, asyncMiddleWare } = require("../middlewares");
+const { validateLogin } = require("../utilities/utils");
+const { checkPost, asyncMiddleWare } = require("../utilities/middlewares");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 

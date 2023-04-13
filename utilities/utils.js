@@ -78,7 +78,7 @@ async function hashPassword(password) {
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "error.log" }),
+    new winston.transports.File({ dirname: "logs", filename: "error.log" }),
     new MongoDB({
       level: "error",
       db: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.jemggly.mongodb.net/movies`,
@@ -91,7 +91,10 @@ const logger = winston.createLogger({
 });
 
 const transport = [
-  new winston.transports.File({ filename: "uncaughtErrors.log" }),
+  new winston.transports.File({
+    dirname: "logs",
+    filename: "uncaughtErrors.log",
+  }),
 ];
 // Gets called automatically when utils.js is loaded by node. No need to call in server.js
 winston.createLogger({

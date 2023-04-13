@@ -1,13 +1,13 @@
 const express = require("express");
 const Movie = require("../models/Movie");
-const { validateMovie } = require("../utils");
+const { validateMovie } = require("../utilities/utils");
 const {
   checkIdRoute,
   checkMainRoute,
   auth,
   isAdmin,
   asyncMiddleWare,
-} = require("../middlewares");
+} = require("../utilities/middlewares");
 
 const router = express.Router();
 
