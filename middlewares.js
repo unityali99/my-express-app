@@ -1,5 +1,6 @@
 const { isValidObjectId } = require("mongoose");
 const jwt = require("jsonwebtoken");
+const { logger } = require("./utils");
 
 function checkPost(req, res, next) {
   if (req.method !== "POST")
@@ -38,7 +39,8 @@ function isAdmin(req, res, next) {
   next();
 }
 
-function error(error, req, res, next) {
+function error(error, req, res) {
+  logger.error(error.message, error);
   res.status(500).send(error.message);
 }
 

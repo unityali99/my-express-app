@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/User");
 const _ = require("lodash");
 const { validateUser, hashPassword } = require("../utils");
-const { checkPost } = require("../middlewares");
+const { checkPost, asyncMiddleWare } = require("../middlewares");
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.use(checkPost);
 
 router.post(
   "/",
-  asyncMiddleware(async (req, res) => {
+  asyncMiddleWare(async (req, res) => {
     const { error } = validateUser(req.body);
     const userExists = await User.findOne({ email: req.body.email });
     if (userExists) return res.status(403).send("User already exists");

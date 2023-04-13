@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
+const winston = require("winston");
 
 function validateGenre(obj) {
   const schema = Joi.object({
@@ -73,10 +74,21 @@ async function hashPassword(password) {
   }
 }
 
-module.exports.validateGenre = validateGenre;
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "error.log" }),
+  ],
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+});
+
 module.exports.validateCustomer = validateCustomer;
 module.exports.validateMovie = validateMovie;
 module.exports.validateRental = validateRental;
 module.exports.validateUser = validateUser;
 module.exports.hashPassword = hashPassword;
 module.exports.validateLogin = validateLogin;
+module.exports.logger = logger;
