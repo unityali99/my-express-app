@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const winston = require("winston");
+const { MongoDB } = require("winston-mongodb");
 
 function validateGenre(obj) {
   const schema = Joi.object({
@@ -78,11 +79,25 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
     new winston.transports.File({ filename: "error.log" }),
+    new MongoDB({
+      level: "error",
+      db: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.jemggly.mongodb.net/movies`,
+      options: {
+        useUnifiedTopology: true,
+      },
+      collection: "logs",
+    }),
   ],
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
+});
+
+const transport = [
+  new winston.transports.File({ filename: "uncaughtErrors.log" }),
+];
+// Gets called automatically when utils.js is loaded by node. No need to call in server.js
+winston.createLogger({
+  exceptionHandlers: transport,
+  rejectionHandlers: transport,
+  exitOnError: true,
 });
 
 module.exports.validateCustomer = validateCustomer;

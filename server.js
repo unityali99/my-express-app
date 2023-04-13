@@ -10,11 +10,14 @@ const authRoute = require("./routes/auth");
 const mongoose = require("mongoose");
 const { error } = require("./middlewares");
 const app = express();
+const favicon = require("serve-favicon");
+const path = require("path");
 
-mongoose
-  .connect(`mongodb://localhost:27017`)
-  .catch((reason) => console.log(reason.message));
+mongoose.connect(
+  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.jemggly.mongodb.net/movies`
+);
 
+app.use(favicon(path.join(__dirname, "favicon.png")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/genres", genresRoute);

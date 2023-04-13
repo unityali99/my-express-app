@@ -64,7 +64,7 @@ router
     isAdmin,
     asyncMiddleWare(async (req, res) => {
       const deletedRental = await Rental.findByIdAndDelete(req.params.id);
-      if (!deletedRental) return res.status(404).send("Rental not found");
+      if (!deletedRental) return (404).send("Rental not found");
       res.status(200).send(`${deletedRental} has been removed`);
     })
   );
