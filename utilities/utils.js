@@ -90,21 +90,23 @@ const logger = winston.createLogger({
   ],
 });
 
-const transport = [
+const transports = [
   new winston.transports.File({
     dirname: "logs",
     filename: "uncaughtErrors.log",
   }),
+  new winston.transports.Console(),
 ];
 // Gets called automatically when utils.js is loaded by node. No need to call in server.js
 winston.createLogger({
-  exceptionHandlers: transport,
-  rejectionHandlers: transport,
+  exceptionHandlers: transports,
+  rejectionHandlers: transports,
   exitOnError: true,
 });
 
 module.exports.validateCustomer = validateCustomer;
 module.exports.validateMovie = validateMovie;
+module.exports.validateGenre = validateGenre;
 module.exports.validateRental = validateRental;
 module.exports.validateUser = validateUser;
 module.exports.hashPassword = hashPassword;
