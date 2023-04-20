@@ -9,6 +9,7 @@ const {
 } = require("../utilities/middlewares");
 
 const Genre = require("../models/Genre");
+const { default: mongoose } = require("mongoose");
 const router = express.Router();
 
 router.param("id", checkIdRoute);
@@ -38,6 +39,8 @@ router
   .get(
     asyncMiddleWare(async (req, res) => {
       const genre = await Genre.findById(req.params.id);
+      if (!mongoose.Types.ObjectId.isValid(req.params.id))
+        res.status(404).send(`Invalid ObjectID`);
       if (!genre)
         return res
           .status(404)

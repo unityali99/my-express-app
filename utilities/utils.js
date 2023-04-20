@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const winston = require("winston");
-const { MongoDB } = require("winston-mongodb");
+// const { MongoDB } = require("winston-mongodb");
 
 function validateGenre(obj) {
   const schema = Joi.object({
@@ -79,14 +79,14 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
     new winston.transports.File({ dirname: "logs", filename: "error.log" }),
-    new MongoDB({
-      level: "error",
-      db: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.jemggly.mongodb.net/movies`,
-      options: {
-        useUnifiedTopology: true,
-      },
-      collection: "logs",
-    }),
+    // new MongoDB({
+    //   level: "error",
+    //   db: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.jemggly.mongodb.net/movies`,
+    //   options: {
+    //     useUnifiedTopology: true,
+    //   },
+    //   collection: "logs",
+    // }),
   ],
 });
 

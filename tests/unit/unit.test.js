@@ -1,5 +1,6 @@
+require("dotenv").config({ path: ".env.test" });
 const { verify } = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../../models/User");
 
 describe("generateAuthToken", () => {
   it("Should return a valid jwt", () => {

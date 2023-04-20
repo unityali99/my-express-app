@@ -2,9 +2,7 @@ const mongoose = require("mongoose");
 
 function dbStartup() {
   mongoose
-    .connect(
-      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.jemggly.mongodb.net/movies`
-    )
+    .connect(process.env.DB)
     .then(() => console.info("Connected to mongoDB ..."));
 }
 
