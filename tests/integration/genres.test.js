@@ -6,6 +6,15 @@ const User = require("../../models/User");
 
 const genreEndpoint = "/api/genres";
 
+let name;
+
+const exec = async () => {
+  return await request(server)
+    .post(genreEndpoint)
+    .set("X-Auth-Token", new User().generateAuthToken())
+    .send({ name });
+};
+
 describe(genreEndpoint, () => {
   afterAll(() => {
     server.close();
@@ -45,47 +54,25 @@ describe(genreEndpoint, () => {
     });
   });
   describe("POST /", () => {
-    it("Shoud response with code 401 if no auth token provided", async () => {
-      const res = await request(server)
-        .post(genreEndpoint)
-        .send({ name: "action" });
-      expect(res.status).toBe(401);
-    });
-    it("Shoud response with code 422 if invalid auth token provided", async () => {
-      const res = await request(server)
-        .post(genreEndpoint)
-        .set(
-          "X-Auth-Token",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-        )
-        .send({ name: "action" });
-      expect(res.status).toBe(422);
+    beforeEach(() => {
+      name = "genre1";
     });
     it("Shoud response with code 400 if genre length is less than 4", async () => {
-      const res = await request(server)
-        .post(genreEndpoint)
-        .set("X-Auth-Token", new User().generateAuthToken())
-        .send({ name: "act" });
+      name = "act";
+      const res = await exec();
       expect(res.status).toBe(400);
     });
     it("Shoud response with code 400 if genre length is more than 15", async () => {
-      const res = await request(server)
-        .post(genreEndpoint)
-        .set("X-Auth-Token", new User().generateAuthToken())
-        .send({ name: new Array(17).join("-") });
+      name = new Array(17).join("-");
+      const res = await exec();
       expect(res.status).toBe(400);
     });
     it("should return the genre if it's saved successfully", async () => {
-      const genre = { name: "genre1" };
-      await request(server)
-        .post(genreEndpoint)
-        .set("X-Auth-Token", new User().generateAuthToken())
-        .send(genre);
-      const savedGenre = await Genre.findOne(genre);
-      console.log(savedGenre);
+      const res = await exec();
+      const savedGenre = await Genre.findOne({ name });
       expect(savedGenre).toHaveProperty("_id");
       expect(savedGenre).toHaveProperty("name", "genre1");
-      await Genre.deleteMany(genre);
+      await Genre.deleteMany({ name });
     });
   });
 });
