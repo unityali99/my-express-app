@@ -9,7 +9,6 @@ const {
 } = require("../utilities/middlewares");
 
 const Genre = require("../models/Genre");
-const { default: mongoose } = require("mongoose");
 const router = express.Router();
 
 router.param("id", checkIdRoute);
@@ -39,12 +38,10 @@ router
   .get(
     asyncMiddleWare(async (req, res) => {
       const genre = await Genre.findById(req.params.id);
-      if (!mongoose.Types.ObjectId.isValid(req.params.id))
-        res.status(404).send(`Invalid ObjectID`);
       if (!genre)
         return res
           .status(404)
-          .send(`There is no genre with ID ${req.params.id}`);
+          .send(`There is no genre with the given ID ${req.params.id}`);
       res.status(200).send(genre);
     })
   )
@@ -65,7 +62,7 @@ router
         return res
           .status(404)
           .send(`There is no genre with the given ID ${req.params.id}`);
-      res.send(`Updated genre: ${updatedGenre}`);
+      res.status(200).send(`Updated genre: ${updatedGenre}`);
     })
   )
   .delete(
@@ -78,7 +75,7 @@ router
           .status(404)
           .send(`There is no genre with the ID ${req.params.id}`);
 
-      res.send(`Deleted genre: ${deletedGenre}`);
+      res.status(200).send(`Deleted genre: ${deletedGenre}`);
     })
   );
 
