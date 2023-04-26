@@ -31,7 +31,7 @@ function validateMovie(obj) {
 
 function validateRental(obj) {
   const schema = Joi.object({
-    date: Joi.date().required(),
+    date: Joi.date(),
     customer: Joi.string().min(24).max(24).required(),
     movie: Joi.string().min(24).max(24).required(),
   });
@@ -62,6 +62,14 @@ function validateLogin(obj) {
     password: Joi.string()
       .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
       .required(),
+  });
+  return schema.validate(obj);
+}
+
+function validateReturn(obj) {
+  const schema = Joi.object({
+    rental: Joi.string().min(24).max(24).required(),
+    date: Joi.date(),
   });
   return schema.validate(obj);
 }
@@ -111,4 +119,5 @@ module.exports.validateRental = validateRental;
 module.exports.validateUser = validateUser;
 module.exports.hashPassword = hashPassword;
 module.exports.validateLogin = validateLogin;
+module.exports.validateReturn = validateReturn;
 module.exports.logger = logger;

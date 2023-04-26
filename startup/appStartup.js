@@ -5,6 +5,7 @@ const moviesRoute = require("../routes/movies");
 const rentalRoute = require("../routes/rentals");
 const usersRoute = require("../routes/users");
 const authRoute = require("../routes/auth");
+const returnsRoute = require("../routes/returns");
 const { error } = require("../utilities/middlewares");
 const favicon = require("serve-favicon");
 const path = require("path");
@@ -19,6 +20,7 @@ function appStartup(app) {
   app.use("/api/rentals", rentalRoute);
   app.use("/api/users", usersRoute);
   app.use("/api/auth", authRoute);
+  app.use("/api/returns", returnsRoute);
   app.use(error);
 }
 

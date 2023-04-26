@@ -37,10 +37,15 @@ const execDelete = async () => {
 };
 
 describe(genreEndpoint, () => {
-  afterAll(() => {
-    server.close();
+  beforeAll(async () => {
+    await Genre.deleteMany({
+      name: { $in: ["horror", "drama", "thriller", "genre0", "genre1"] },
+    });
   });
   describe("GET /", () => {
+    afterEach(async () => {
+      await server.close();
+    });
     it("Should return an array of genre objects", async () => {
       await Genre.insertMany([
         {
@@ -57,6 +62,9 @@ describe(genreEndpoint, () => {
     });
   });
   describe("GET /:id", () => {
+    afterEach(async () => {
+      await server.close();
+    });
     it("Should return the object if valid id is passed", async () => {
       const genre = await Genre.create({ name: "thriller" });
       const res = await request(server).get(genreEndpoint + "/" + genre._id);
@@ -75,6 +83,9 @@ describe(genreEndpoint, () => {
     });
   });
   describe("POST /", () => {
+    afterEach(async () => {
+      await server.close();
+    });
     beforeEach(() => {
       name = "genre1";
     });
@@ -97,6 +108,9 @@ describe(genreEndpoint, () => {
     });
   });
   describe("PUT /", () => {
+    afterEach(async () => {
+      await server.close();
+    });
     beforeEach(async () => {
       name = "genre1";
       const genre = await Genre.create({ name: "genre0" });
@@ -126,6 +140,9 @@ describe(genreEndpoint, () => {
     });
   });
   describe("DELETE /", () => {
+    afterEach(async () => {
+      await server.close();
+    });
     it("Should send response with 404 code if valid id is passed but no genre found", async () => {
       id = "614042da214e692d773c0f8a";
       const res = await execDelete();
