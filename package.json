@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --runInBand --detectOpenHandles --coverage"
+    "test": "jest --watchAll --verbose --runInBand --detectOpenHandles --coverage",
+    "test:integration": "jest --verbose --runInBand --detectOpenHandles --testPathPattern=tests/integration",
+    "test:unit": "jest --verbose --runInBand --detectOpenHandles --testPathPattern=tests/unit"
   },
   "type": "commonjs",
   "keywords": [],

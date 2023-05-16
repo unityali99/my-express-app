@@ -69,7 +69,7 @@ function validateLogin(obj) {
 function validateReturn(obj) {
   const schema = Joi.object({
     rental: Joi.string().min(24).max(24).required(),
-    date: Joi.date(),
+    date: Joi.date().required(),
   });
   return schema.validate(obj);
 }

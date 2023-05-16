@@ -77,7 +77,7 @@ describe(genreEndpoint, () => {
     });
     it("Should send response with 404 code if valid id is passed but no genre found", async () => {
       const res = await request(server).get(
-        genreEndpoint + "/" + "61717b08a7a2d0c75879e559"
+        genreEndpoint + "/" + process.env.NOT_EXIST_VALID_GENRE_ID
       );
       expect(res.status).toBe(404);
     });
@@ -134,7 +134,7 @@ describe(genreEndpoint, () => {
       expect(res.status).toBe(200);
     });
     it("Should send response with 404 code if valid id is passed but no genre found", async () => {
-      id = "614042da214e692d773c0f8a";
+      id = process.env.NOT_EXIST_VALID_GENRE_ID;
       const res = await execPut();
       expect(res.status).toBe(404);
     });
@@ -144,7 +144,7 @@ describe(genreEndpoint, () => {
       await server.close();
     });
     it("Should send response with 404 code if valid id is passed but no genre found", async () => {
-      id = "614042da214e692d773c0f8a";
+      id = process.env.NOT_EXIST_VALID_GENRE_ID;
       const res = await execDelete();
       expect(res.status).toBe(404);
     });
