@@ -2,6 +2,7 @@ require("dotenv").config();
 const app = require("express")();
 require("./startup/appStartup")(app);
 require("./startup/dbStartup")();
+require("./startup/production")(app);
 
 const port = process.env.PORT || 3000;
 
